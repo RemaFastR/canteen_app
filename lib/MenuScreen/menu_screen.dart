@@ -11,7 +11,11 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('data'),
+      child: Center(
+          child: Text(
+        'Меню',
+        style: TextStyle(fontSize: 25),
+      )),
     );
   }
 }

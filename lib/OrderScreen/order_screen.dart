@@ -11,7 +11,11 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('dfd'),
+      child: Center(
+          child: Text(
+        'Заказ',
+        style: TextStyle(fontSize: 25),
+      )),
     );
   }
 }
