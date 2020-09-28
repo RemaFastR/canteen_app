@@ -20,32 +20,44 @@ class _TabbedScreenState extends State<TabbedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [_buildOffstageNavigator(0), _buildOffstageNavigator(1)],
+      body: Stack(
+        children: [_buildOffstageNavigator(0), _buildOffstageNavigator(1)],
+      ),
+      bottomNavigationBar: new Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Theme.of(context).accentColor,
         ),
-        bottomNavigationBar: new Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Theme.of(context).accentColor,
-          ),
-          child: BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-              type: BottomNavigationBarType.shifting,
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    title: Text(
-                      'Меню',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.shopping_basket),
-                    title: Text(
-                      'Корзина',
-                      style: TextStyle(color: Colors.white),
-                    )),
-              ]),
-        ));
+        child: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            type: BottomNavigationBarType.shifting,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text(
+                    'Меню',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_basket),
+                  title: Text(
+                    'Корзина',
+                    style: TextStyle(color: Colors.white),
+                  )),
+            ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromRGBO(248, 144, 144, 1),
+        foregroundColor: Colors.black,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/images/icons/arrow_back.png'),
+        ),
+      ),
+    );
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {

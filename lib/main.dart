@@ -11,7 +11,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        // Стандартный цвет для виджетов.
+        accentColor: Color.fromRGBO(231, 181, 127, 1),
+        // Цвет фона для основых частей приложения (toolbars, tab bars и т.д.).
+        primaryColor: Color.fromRGBO(231, 181, 127, 1),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: TabbedScreen(),
