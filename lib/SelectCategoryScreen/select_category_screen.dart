@@ -146,43 +146,63 @@ class CustomDialog extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Color.fromRGBO(251, 244, 244, 1),
-      child: Container(
-        height: 500,
-        padding: EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Image.asset(imgSrc),
-            Text(description),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
+        children: [
+          Container(
+            height: 500,
+            padding: EdgeInsets.all(15),
+            child: Column(
               children: [
-                Text(grammar),
-                Text(cost),
+                Image.asset(imgSrc),
+                Text(description),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(grammar),
+                    Text(cost),
+                  ],
+                ),
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: itemHeight / 7,
+                      width: itemWidth,
+                      child: RawMaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)),
+                        fillColor: Color.fromRGBO(166, 192, 133, 1),
+                        splashColor: Color.fromRGBO(166, 192, 133, 1),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // To close the dialog
+                        },
+                        child: Text(
+                          'Добавить',
+                          style: TextStyle(
+                              color: Color.fromRGBO(251, 244, 244, 1),
+                              fontSize: 24),
+                        ),
+                      ),
+                    )),
               ],
             ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: itemHeight / 7,
-                  width: itemWidth,
-                  child: RawMaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    fillColor: Color.fromRGBO(166, 192, 133, 1),
-                    splashColor: Color.fromRGBO(166, 192, 133, 1),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // To close the dialog
-                    },
-                    child: Text(
-                      'Добавить',
-                      style: TextStyle(
-                          color: Color.fromRGBO(251, 244, 244, 1),
-                          fontSize: 24),
-                    ),
-                  ),
-                )),
-          ],
-        ),
+          ),
+          Positioned(
+            right: 0.0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 14.0,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.close, color: Colors.red),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
