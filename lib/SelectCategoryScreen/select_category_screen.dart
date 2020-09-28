@@ -1,4 +1,6 @@
+import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SelectCategoryScreen extends StatefulWidget {
   SelectCategoryScreen({Key key}) : super(key: key);
@@ -30,6 +32,8 @@ var size;
 double itemHeight;
 double itemWidth;
 
+BuildContext scaffoldContext;
+
 class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
   @override
   Widget build(BuildContext context) {
@@ -38,11 +42,12 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
     /*24 - notification bar на Android*/
     itemHeight = (size.height - kToolbarHeight - 24) / 2;
     itemWidth = size.width / 2;
+    scaffoldContext = context;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Меню',
-          style: TextStyle(color: Color.fromRGBO(64, 55, 55, 1)),
+          style: TextStyle(color: productInfoColor),
         ),
       ),
       body: Container(
@@ -95,7 +100,7 @@ Widget productsListWidget(List<Product> products) {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                color: Colors.black38,
+                color: titlesColor,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: GridTile(
@@ -106,7 +111,7 @@ Widget productsListWidget(List<Product> products) {
                                   bottom: Radius.circular(8))),
                           clipBehavior: Clip.antiAlias,
                           child: GridTileBar(
-                            backgroundColor: Color.fromRGBO(166, 192, 133, 1),
+                            backgroundColor: cardsColor,
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -145,7 +150,7 @@ class CustomDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       elevation: 0.0,
-      backgroundColor: Color.fromRGBO(251, 244, 244, 1),
+      backgroundColor: titlesColor,
       child: Stack(
         children: [
           Container(
@@ -153,15 +158,32 @@ class CustomDialog extends StatelessWidget {
             padding: EdgeInsets.all(15),
             child: Column(
               children: [
-                Image.asset(imgSrc),
-                Text(description),
+                Container(
+                  width: 150,
+                  height: 150,
+                  child: Image.asset(imgSrc),
+                ),
+                Text(
+                  description,
+                  style: TextStyle(color: productInfoColor, fontSize: 17),
+                  textAlign: TextAlign.justify,
+                ),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(grammar),
-                    Text(cost),
+                    Text(
+                      grammar,
+                      style: TextStyle(color: productInfoColor, fontSize: 19),
+                    ),
+                    Text(
+                      cost,
+                      style:
+                          TextStyle(color: orderProductCostColor, fontSize: 19),
+                    ),
                   ],
                 ),
+                SizedBox(height: 10),
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
@@ -170,16 +192,15 @@ class CustomDialog extends StatelessWidget {
                       child: RawMaterialButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)),
-                        fillColor: Color.fromRGBO(166, 192, 133, 1),
-                        splashColor: Color.fromRGBO(166, 192, 133, 1),
+                        fillColor: cardsColor,
+                        splashColor: cardsColor,
                         onPressed: () {
+                          _showToast(scaffoldContext);
                           Navigator.of(context).pop(); // To close the dialog
                         },
                         child: Text(
                           'Добавить',
-                          style: TextStyle(
-                              color: Color.fromRGBO(251, 244, 244, 1),
-                              fontSize: 24),
+                          style: TextStyle(color: titlesColor, fontSize: 24),
                         ),
                       ),
                     )),
@@ -196,13 +217,28 @@ class CustomDialog extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: CircleAvatar(
                   radius: 14.0,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.close, color: Colors.red),
+                  backgroundColor: orderProductCostColor,
+                  child: Icon(Icons.close, color: titlesColor),
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: titlesColor,
+        content: Text('Блюдо добавлено в корзину',
+            style: TextStyle(
+              color: productInfoColor,
+            )),
+        action: SnackBarAction(
+            label: 'Хорошо', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }

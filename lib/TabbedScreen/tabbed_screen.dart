@@ -50,7 +50,7 @@ class _TabbedScreenState extends State<TabbedScreen> {
         backgroundColor: const Color.fromRGBO(248, 144, 144, 1),
         foregroundColor: Colors.black,
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.of(context).pop();
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),

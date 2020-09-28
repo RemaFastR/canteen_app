@@ -1,4 +1,5 @@
 import 'package:canteen_app/MenuScreen/menu_bloc.dart';
+import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _MenuScreenState extends State<MenuScreen> {
       appBar: AppBar(
         title: Text(
           'Меню',
-          style: TextStyle(color: Color.fromRGBO(64, 55, 55, 1)),
+          style: TextStyle(color: productInfoColor),
         ),
       ),
       body: Container(
@@ -64,7 +65,7 @@ Widget categotiesListWidget(List<Category> categories) {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
-              color: Color.fromRGBO(166, 192, 133, 1),
+              color: cardsColor,
               child: Center(
                 child: Column(
                   children: [
@@ -75,9 +76,7 @@ Widget categotiesListWidget(List<Category> categories) {
                     ),
                     Text(
                       categories[index].title,
-                      style: TextStyle(
-                          color: Color.fromRGBO(251, 244, 244, 1),
-                          fontSize: 22),
+                      style: TextStyle(color: titlesColor, fontSize: 22),
                     )
                   ],
                 ),

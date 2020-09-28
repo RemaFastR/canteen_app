@@ -1,3 +1,4 @@
+import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
 
 import '../SelectCategoryScreen/select_category_screen.dart';
@@ -40,7 +41,7 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: AppBar(
         title: Text(
           'Заказ',
-          style: TextStyle(color: Color.fromRGBO(64, 55, 55, 1)),
+          style: TextStyle(color: productInfoColor),
         ),
       ),
       body: Container(
@@ -76,7 +77,7 @@ class CreateOrderList extends StatelessWidget {
             child: Text('Итог: 150Р',
                 style: TextStyle(
                     color: Theme.of(context).accentColor, fontSize: 25))),
-        confirmWidget()
+        confirmWidget(context)
       ],
     );
   }
@@ -86,30 +87,31 @@ class CreateOrderList extends StatelessWidget {
         itemCount: products.length,
         itemBuilder: (context, index) {
           return Container(
-              height: itemHeight / 3,
+              padding: EdgeInsets.all(3),
+              height: itemHeight / 4,
               child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                color: Color.fromRGBO(166, 192, 133, 1),
-                child: ListTile(
-                  leading: Image.asset(products[index].image),
-                  title: Text(
-                    products[index].title,
-                    style: TextStyle(
-                        color: Color.fromRGBO(251, 244, 244, 1), fontSize: 25),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
-                  subtitle: Text(
-                    products[index].cost,
-                    style: TextStyle(
-                        color: Color.fromRGBO(164, 74, 63, 1), fontSize: 17),
-                  ),
-                ),
-              ));
+                  color: cardsColor,
+                  child: Center(
+                    child: ListTile(
+                      leading: Image.asset(products[index].image),
+                      title: Text(
+                        products[index].title,
+                        style: TextStyle(color: titlesColor, fontSize: 25),
+                      ),
+                      subtitle: Text(
+                        products[index].cost,
+                        style: TextStyle(
+                            color: orderProductCostColor, fontSize: 17),
+                      ),
+                    ),
+                  )));
         });
   }
 
-  Widget confirmWidget() {
+  Widget confirmWidget(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -120,13 +122,35 @@ class CreateOrderList extends StatelessWidget {
             child: RawMaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)),
-              fillColor: Color.fromRGBO(248, 144, 144, 1),
-              splashColor: Color.fromRGBO(248, 144, 144, 1),
-              onPressed: () {},
+              fillColor: createOrderButtonColor,
+              splashColor: createOrderButtonColor,
+              onPressed: () {
+                showGeneralDialog(
+                    barrierColor: Colors.black.withOpacity(0.5),
+                    transitionBuilder: (context, a1, a2, widget) {
+                      final curvedValue =
+                          Curves.easeInOutBack.transform(a1.value) - 1.0;
+                      return Transform(
+                        transform: Matrix4.translationValues(
+                            0.0, curvedValue * 200, 0.0),
+                        child: Opacity(
+                            opacity: a1.value,
+                            child: CreateOrderDialog(
+                                messageText:
+                                    'Спасибо за ваш заказ! Он принят в обработку.',
+                                orderNumTitle: 'Номер заказа',
+                                orderNumber: '123')),
+                      );
+                    },
+                    transitionDuration: Duration(milliseconds: 200),
+                    barrierDismissible: true,
+                    barrierLabel: '',
+                    context: context,
+                    pageBuilder: (context, animation1, animation2) {});
+              },
               child: Text(
                 'Оформить',
-                style: TextStyle(
-                    color: Color.fromRGBO(251, 244, 244, 1), fontSize: 24),
+                style: TextStyle(color: titlesColor, fontSize: 24),
               ),
             )),
         Container(
@@ -136,16 +160,87 @@ class CreateOrderList extends StatelessWidget {
             child: RawMaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)),
-              fillColor: Color.fromRGBO(199, 86, 72, 1),
-              splashColor: Color.fromRGBO(199, 86, 72, 1),
+              fillColor: cleanOrderButtonColor,
+              splashColor: cleanOrderButtonColor,
               onPressed: () {},
               child: Text(
                 'Очистить',
-                style: TextStyle(
-                    color: Color.fromRGBO(251, 244, 244, 1), fontSize: 24),
+                style: TextStyle(color: titlesColor, fontSize: 24),
               ),
             )),
       ],
+    );
+  }
+}
+
+class CreateOrderDialog extends StatelessWidget {
+  final String messageText, orderNumTitle, orderNumber;
+
+  CreateOrderDialog({
+    @required this.messageText,
+    @required this.orderNumTitle,
+    @required this.orderNumber,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 0.0,
+      backgroundColor: titlesColor,
+      child: Stack(
+        children: [
+          Container(
+            height: 150,
+            width: itemWidth + 50,
+            padding: EdgeInsets.all(15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  messageText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: productInfoColor, fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      orderNumTitle,
+                      style: TextStyle(color: barsColor, fontSize: 18),
+                    ),
+                    Text(orderNumber,
+                        style: TextStyle(
+                            color: orderProductCostColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 0.0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 14.0,
+                  backgroundColor: orderProductCostColor,
+                  child: Icon(Icons.close, color: titlesColor),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
