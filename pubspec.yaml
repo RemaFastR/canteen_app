@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  rxdart: 0.22.2
   fluttertoast: ^7.1.1
   curved_navigation_bar: ^0.1.2
   awesome_dialog: ^1.2.0

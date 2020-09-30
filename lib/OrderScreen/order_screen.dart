@@ -1,8 +1,6 @@
+import 'package:canteen_app/Models/product.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
-
-import '../SelectCategoryScreen/select_category_screen.dart';
-import '../SelectCategoryScreen/select_category_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   OrderScreen({Key key}) : super(key: key);
@@ -11,28 +9,28 @@ class OrderScreen extends StatefulWidget {
   _OrderScreenState createState() => _OrderScreenState();
 }
 
-final List<Product> categories = [
-  Product('Пюре', 'assets/images/categories/soup.png', 30, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Куриный суп', 'assets/images/categories/garnish.png', 60, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Пюре', 'assets/images/categories/meat.png', 30, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Куриный суп', 'assets/images/categories/salad.png', 60, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Пюре', 'assets/images/categories/cake.png', 30, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Куриный суп', 'assets/images/categories/drink.png', 60, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Пюре', 'assets/images/categories/cake.png', 30, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-  Product('Куриный суп', 'assets/images/categories/drink.png', 60, 40,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-];
+// final List<Product> categories = [
+//   Product('Пюре', 'assets/images/categories/soup.png', 30, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Куриный суп', 'assets/images/categories/garnish.png', 60, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Пюре', 'assets/images/categories/meat.png', 30, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Куриный суп', 'assets/images/categories/salad.png', 60, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Пюре', 'assets/images/categories/cake.png', 30, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Куриный суп', 'assets/images/categories/drink.png', 60, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Пюре', 'assets/images/categories/cake.png', 30, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+//   Product('Куриный суп', 'assets/images/categories/drink.png', 60, 40,
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
+// ];
 
-var size;
-double itemHeight;
-double itemWidth;
+// var size;
+// double itemHeight;
+// double itemWidth;
 
 class _OrderScreenState extends State<OrderScreen> {
   @override
@@ -54,69 +52,48 @@ class _OrderScreenState extends State<OrderScreen> {
 class CreateOrderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
+    // size = MediaQuery.of(context).size;
 
-    /*24 - notification bar на Android*/
-    itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    itemWidth = size.width / 2;
+    // /*24 - notification bar на Android*/
+    // itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    // itemWidth = size.width / 2;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: orderListWidget(products)),
+        Expanded(child: OrderListWidget(null)),
         Padding(
             padding: EdgeInsets.only(
-                bottom: itemHeight / 60, left: 10, right: 10, top: 10),
+                bottom: ScreenSize.itemHeight / 60,
+                left: 10,
+                right: 10,
+                top: 10),
             child: Container(
                 height: 5,
                 decoration: new BoxDecoration(
                   color: Theme.of(context).accentColor,
                 ))),
         Container(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child: Text('Итог: 150Р',
                 style: TextStyle(
                     color: Theme.of(context).accentColor, fontSize: 25))),
-        confirmWidget(context)
+        ConfirmWidget()
       ],
     );
   }
+}
 
-  Widget orderListWidget(List<Product> products) {
-    return ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return Container(
-              padding: EdgeInsets.all(3),
-              height: itemHeight / 4,
-              child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  color: cardsColor,
-                  child: Center(
-                    child: ListTile(
-                      leading: Image.asset(products[index].image),
-                      title: Text(
-                        products[index].title,
-                        style: TextStyle(color: titlesColor, fontSize: 25),
-                      ),
-                      subtitle: Text(
-                        products[index].cost,
-                        style: TextStyle(
-                            color: orderProductCostColor, fontSize: 17),
-                      ),
-                    ),
-                  )));
-        });
-  }
+class ConfirmWidget extends StatelessWidget {
+  const ConfirmWidget({Key key}) : super(key: key);
 
-  Widget confirmWidget(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-            padding: EdgeInsets.only(bottom: 10, top: 10, left: 10),
+            padding: const EdgeInsets.only(bottom: 10, top: 10, left: 10),
             height: 60,
             width: 160,
             child: RawMaterialButton(
@@ -142,7 +119,7 @@ class CreateOrderList extends StatelessWidget {
                                 orderNumber: '123')),
                       );
                     },
-                    transitionDuration: Duration(milliseconds: 200),
+                    transitionDuration: const Duration(milliseconds: 200),
                     barrierDismissible: true,
                     barrierLabel: '',
                     context: context,
@@ -154,7 +131,7 @@ class CreateOrderList extends StatelessWidget {
               ),
             )),
         Container(
-            padding: EdgeInsets.only(bottom: 10, top: 10, right: 10),
+            padding: const EdgeInsets.only(bottom: 10, top: 10, right: 10),
             height: 60,
             width: 160,
             child: RawMaterialButton(
@@ -170,6 +147,41 @@ class CreateOrderList extends StatelessWidget {
             )),
       ],
     );
+  }
+}
+
+class OrderListWidget extends StatelessWidget {
+  List<Product> products;
+  OrderListWidget(this.products);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          return Container(
+              padding: const EdgeInsets.all(3),
+              height: ScreenSize.itemHeight / 4,
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  color: cardsColor,
+                  child: Center(
+                    child: ListTile(
+                      leading: Image.asset(products[index].image),
+                      title: Text(
+                        products[index].title,
+                        style: TextStyle(color: titlesColor, fontSize: 25),
+                      ),
+                      subtitle: Text(
+                        products[index].cost,
+                        style: TextStyle(
+                            color: orderProductCostColor, fontSize: 17),
+                      ),
+                    ),
+                  )));
+        });
   }
 }
 
@@ -194,8 +206,8 @@ class CreateOrderDialog extends StatelessWidget {
         children: [
           Container(
             height: 150,
-            width: itemWidth + 50,
-            padding: EdgeInsets.all(15),
+            width: ScreenSize.itemWidth + 50,
+            padding: const EdgeInsets.all(15),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
