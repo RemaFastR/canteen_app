@@ -75,6 +75,8 @@ class ProductsListWidget extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
               onTap: () {
+                double dragStart;
+                double dragUpdate;
                 showGeneralDialog(
                     barrierColor: Colors.black.withOpacity(0.5),
                     transitionBuilder: (context, a1, a2, widget) {
@@ -85,17 +87,33 @@ class ProductsListWidget extends StatelessWidget {
                             0.0, curvedValue * 200, 0.0),
                         child: Opacity(
                             opacity: a1.value,
-                            child: CustomDialog(
-                              productId: products[index].id,
-                              title: products[index].title,
-                              description: products[index].description,
-                              grammar: products[index].grammar,
-                              cost: products[index].cost,
-                              imgSrc: products[index].image,
+                            child: GestureDetector(
+                              onVerticalDragStart: (details) {
+                                dragStart =
+                                    details.globalPosition.dy.floorToDouble();
+
+                                print('dragStart ' + dragStart.toString());
+                              },
+                              onVerticalDragUpdate: (details) {
+                                dragUpdate =
+                                    details.globalPosition.dy.floorToDouble();
+                                print('dragUpdate' + dragUpdate.toString());
+                                if (dragUpdate + 40 < dragStart) {
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: CustomDialog(
+                                productId: products[index].id,
+                                title: products[index].title,
+                                description: products[index].description,
+                                grammar: products[index].grammar,
+                                cost: products[index].cost,
+                                imgSrc: products[index].image,
+                              ),
                             )),
                       );
                     },
-                    transitionDuration: Duration(milliseconds: 200),
+                    transitionDuration: Duration(milliseconds: 500),
                     barrierDismissible: true,
                     barrierLabel: '',
                     context: context,
@@ -142,35 +160,7 @@ class ProductsListWidget extends StatelessWidget {
                                 ],
                               ),
                             ])),
-                  )
-                  //ClipRRect(
-                  //     borderRadius: BorderRadius.circular(8.0),
-                  //     child: GridTile(
-                  //         footer: Material(
-                  //           color: Colors.transparent,
-                  //           shape: const RoundedRectangleBorder(
-                  //               borderRadius: BorderRadius.vertical(
-                  //                   bottom: Radius.circular(8))),
-                  //           clipBehavior: Clip.antiAlias,
-                  //           child: GridTileBar(
-                  //             backgroundColor: cardsColor,
-                  //             title: Row(
-                  //               mainAxisAlignment:
-                  //                   MainAxisAlignment.spaceBetween,
-                  //               children: [
-                  //                 Container(child: Text(products[index].title)),
-                  //                 Container(
-                  //                     child: Text(
-                  //                         products[index].cost.toString())),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         child: Image.asset(
-                  //           products[index].image,
-                  //           fit: BoxFit.fill,
-                  //         )))
-                  ),
+                  )),
             );
           }),
     );
@@ -200,7 +190,7 @@ class CustomDialog extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            //height: ScreenSize.itemHeight * 1.5,
+            height: ScreenSize.itemHeight * 1.5,
             padding: EdgeInsets.all(15),
             child: Column(
               children: [
@@ -242,8 +232,7 @@ class CustomDialog extends StatelessWidget {
                         splashColor: cardsColor,
                         onPressed: () {
                           categoryBloc.addInOrder(this.productId, this.title,
-                              this.imgSrc, this.cost);
-                          _showToast(scaffoldContext);
+                              this.imgSrc, this.cost, scaffoldContext);
                           Navigator.of(context).pop(); // To close the dialog
                         },
                         child: Text(
@@ -272,21 +261,6 @@ class CustomDialog extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showToast(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        backgroundColor: titlesColor,
-        content: Text('Блюдо добавлено в корзину',
-            style: TextStyle(
-              color: productInfoColor,
-            )),
-        action: SnackBarAction(
-            label: 'Хорошо', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }

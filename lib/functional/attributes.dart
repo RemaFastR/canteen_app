@@ -15,3 +15,29 @@ class ScreenSize {
   static double itemHeight;
   static double itemWidth;
 }
+
+class CustomAlertDialog extends StatelessWidget {
+  final alertTitle;
+  final alertText;
+  final List<Widget> buttons;
+
+  CustomAlertDialog(
+      {@required this.alertTitle,
+      @required this.alertText,
+      @required this.buttons});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        backgroundColor: titlesColor,
+        title: Text(
+          alertTitle,
+          style: TextStyle(color: productInfoColor),
+        ),
+        content: Text(
+          alertText,
+          style: TextStyle(color: productInfoColor),
+        ),
+        actions: buttons);
+  }
+}

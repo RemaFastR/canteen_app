@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/OrderScreen/order_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
+import 'package:canteen_app/main.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -101,11 +102,32 @@ class ConfirmWidget extends StatelessWidget {
               fillColor: createOrderButtonColor,
               splashColor: createOrderButtonColor,
               onPressed: () {
-                CreateOrderDialog createOrderDialog = CreateOrderDialog(
-                    messageText: 'Спасибо за ваш заказ! Он принят в обработку.',
-                    orderNumTitle: 'Номер заказа',
-                    orderNumber: '123');
-                orderBloc.sendOrder(createOrderDialog, context);
+                if (orderProductsList.length == 0) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomAlertDialog(
+                            alertTitle: 'Предупреждение',
+                            alertText:
+                                'Для совершения заказа заполните корзину',
+                            buttons: <Widget>[
+                              new FlatButton(
+                                textColor: cleanOrderButtonColor,
+                                child: new Text("Хорошо"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ]);
+                      });
+                } else {
+                  CreateOrderDialog createOrderDialog = CreateOrderDialog(
+                      messageText:
+                          'Спасибо за ваш заказ! Он принят в обработку.',
+                      orderNumTitle: 'Номер заказа',
+                      orderNumber: '123');
+                  orderBloc.sendOrder(createOrderDialog, context);
+                }
               },
               child: Text(
                 'Оформить',
@@ -122,7 +144,50 @@ class ConfirmWidget extends StatelessWidget {
               fillColor: cleanOrderButtonColor,
               splashColor: cleanOrderButtonColor,
               onPressed: () {
-                orderBloc.clearOrderList();
+                if (orderProductsList.length == 0) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomAlertDialog(
+                            alertTitle: 'Предупреждение',
+                            alertText: 'Корзина уже пустая!',
+                            buttons: <Widget>[
+                              new FlatButton(
+                                textColor: cleanOrderButtonColor,
+                                child: new Text("Хорошо"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ]);
+                      });
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomAlertDialog(
+                            alertTitle: 'Предупреждение',
+                            alertText:
+                                'Вы действительно хотите очистить корзину?',
+                            buttons: <Widget>[
+                              new FlatButton(
+                                textColor: cleanOrderButtonColor,
+                                child: new Text("Да"),
+                                onPressed: () {
+                                  orderBloc.clearOrderList();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              new FlatButton(
+                                textColor: cleanOrderButtonColor,
+                                child: new Text("Нет"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ]);
+                      });
+                }
               },
               child: Text(
                 'Очистить',

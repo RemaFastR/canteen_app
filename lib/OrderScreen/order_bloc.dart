@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/OrderScreen/order_screen.dart';
+import 'package:canteen_app/functional/attributes.dart';
 import 'package:canteen_app/functional/main_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -52,8 +53,17 @@ class OrderBloc implements Bloc {
 
   decrementProductCount(ProductForOrder productForOrder) async {
     productForOrder.quantity--;
-    _orderCountFetcher.sink.add(productForOrder.quantity);
-    getOrderPrice();
+    if (productForOrder.quantity > 0) {
+      _orderCountFetcher.sink.add(productForOrder.quantity);
+      getOrderPrice();
+    } else {
+      //productForOrder.quantity = 1;
+      print("product count < 1");
+      orderProductsList.remove(productForOrder);
+      List<ProductForOrder> orders = orderProductsList;
+      _orderFetcher.sink.add(orders);
+      getOrderPrice();
+    }
   }
 
   sendOrder(CreateOrderDialog createOrderDialog, BuildContext context) async {

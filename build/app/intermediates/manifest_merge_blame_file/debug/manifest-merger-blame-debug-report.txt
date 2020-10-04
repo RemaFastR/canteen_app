@@ -30,8 +30,8 @@
 25        android:debuggable="true"
 26        android:icon="@mipmap/ic_launcher"
 26-->G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:11:9-43
-27        android:label="Столовая ЧГУ" >
-27-->G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:10:9-37
+27        android:label="Столовка" >
+27-->G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:10:9-33
 28        <activity
 28-->G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:12:9-40:20
 29            android:name="com.example.canteen_app.MainActivity"
