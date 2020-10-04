@@ -1,4 +1,7 @@
-import 'package:canteen_app/Models/product.dart';
+import 'dart:convert';
+
+import 'package:canteen_app/Models/order.dart';
+import 'package:canteen_app/OrderScreen/order_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
 
@@ -8,29 +11,6 @@ class OrderScreen extends StatefulWidget {
   @override
   _OrderScreenState createState() => _OrderScreenState();
 }
-
-// final List<Product> categories = [
-//   Product('Пюре', 'assets/images/categories/soup.png', 30, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Куриный суп', 'assets/images/categories/garnish.png', 60, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Пюре', 'assets/images/categories/meat.png', 30, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Куриный суп', 'assets/images/categories/salad.png', 60, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Пюре', 'assets/images/categories/cake.png', 30, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Куриный суп', 'assets/images/categories/drink.png', 60, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Пюре', 'assets/images/categories/cake.png', 30, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-//   Product('Куриный суп', 'assets/images/categories/drink.png', 60, 40,
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
-// ];
-
-// var size;
-// double itemHeight;
-// double itemWidth;
 
 class _OrderScreenState extends State<OrderScreen> {
   @override
@@ -57,11 +37,22 @@ class CreateOrderList extends StatelessWidget {
     // /*24 - notification bar на Android*/
     // itemHeight = (size.height - kToolbarHeight - 24) / 2;
     // itemWidth = size.width / 2;
-
+    orderBloc.getOrderList();
+    orderBloc.getOrderPrice();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: OrderListWidget(null)),
+        StreamBuilder(
+            stream: orderBloc.orderStream,
+            builder: (context, AsyncSnapshot<List<ProductForOrder>> snapshot) {
+              if (snapshot.hasData) {
+                print("Order Snapshot Size: ${snapshot.data.length}");
+                return Expanded(child: OrderListWidget(snapshot.data));
+              } else if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              }
+              return Center(child: CircularProgressIndicator());
+            }),
         Padding(
             padding: EdgeInsets.only(
                 bottom: ScreenSize.itemHeight / 60,
@@ -74,10 +65,18 @@ class CreateOrderList extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                 ))),
         Container(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text('Итог: 150Р',
-                style: TextStyle(
-                    color: Theme.of(context).accentColor, fontSize: 25))),
+          padding: const EdgeInsets.only(left: 10),
+          child: StreamBuilder(
+            stream: orderBloc.orderPriceStream,
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+              return Container(
+                child: Text('Итог: ${snapshot.data ?? 0.toString()}' + '₽',
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor, fontSize: 25)),
+              );
+            },
+          ),
+        ),
         ConfirmWidget()
       ],
     );
@@ -102,28 +101,11 @@ class ConfirmWidget extends StatelessWidget {
               fillColor: createOrderButtonColor,
               splashColor: createOrderButtonColor,
               onPressed: () {
-                showGeneralDialog(
-                    barrierColor: Colors.black.withOpacity(0.5),
-                    transitionBuilder: (context, a1, a2, widget) {
-                      final curvedValue =
-                          Curves.easeInOutBack.transform(a1.value) - 1.0;
-                      return Transform(
-                        transform: Matrix4.translationValues(
-                            0.0, curvedValue * 200, 0.0),
-                        child: Opacity(
-                            opacity: a1.value,
-                            child: CreateOrderDialog(
-                                messageText:
-                                    'Спасибо за ваш заказ! Он принят в обработку.',
-                                orderNumTitle: 'Номер заказа',
-                                orderNumber: '123')),
-                      );
-                    },
-                    transitionDuration: const Duration(milliseconds: 200),
-                    barrierDismissible: true,
-                    barrierLabel: '',
-                    context: context,
-                    pageBuilder: (context, animation1, animation2) {});
+                CreateOrderDialog createOrderDialog = CreateOrderDialog(
+                    messageText: 'Спасибо за ваш заказ! Он принят в обработку.',
+                    orderNumTitle: 'Номер заказа',
+                    orderNumber: '123');
+                orderBloc.sendOrder(createOrderDialog, context);
               },
               child: Text(
                 'Оформить',
@@ -139,7 +121,9 @@ class ConfirmWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50)),
               fillColor: cleanOrderButtonColor,
               splashColor: cleanOrderButtonColor,
-              onPressed: () {},
+              onPressed: () {
+                orderBloc.clearOrderList();
+              },
               child: Text(
                 'Очистить',
                 style: TextStyle(color: titlesColor, fontSize: 24),
@@ -151,7 +135,7 @@ class ConfirmWidget extends StatelessWidget {
 }
 
 class OrderListWidget extends StatelessWidget {
-  List<Product> products;
+  List<ProductForOrder> products;
   OrderListWidget(this.products);
 
   @override
@@ -161,27 +145,95 @@ class OrderListWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
               padding: const EdgeInsets.all(3),
-              height: ScreenSize.itemHeight / 4,
+              height: ScreenSize.itemHeight / 2.8,
               child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   color: cardsColor,
-                  child: Center(
-                    child: ListTile(
-                      leading: Image.asset(products[index].image),
-                      title: Text(
-                        products[index].title,
-                        style: TextStyle(color: titlesColor, fontSize: 25),
-                      ),
-                      subtitle: Text(
-                        products[index].cost,
-                        style: TextStyle(
-                            color: orderProductCostColor, fontSize: 17),
-                      ),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Image.asset(products[index].image) ?? "",
+                        Expanded(
+                            child: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                products[index].title ?? "",
+                                style:
+                                    TextStyle(color: titlesColor, fontSize: 23),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    products[index].cost.toString() + '₽' ?? "",
+                                    style: TextStyle(
+                                        color: orderProductCostColor,
+                                        fontSize: 18),
+                                  ),
+                                  SizedBox(
+                                    width: ScreenSize.itemWidth / 2.6,
+                                  ),
+                                  StreamBuilder(
+                                    stream: orderBloc.orderCountStream,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<int> snapshot) {
+                                      return Row(
+                                        children: [
+                                          CustomCounter(
+                                              icon: Icon(Icons.remove),
+                                              onPress: () => orderBloc
+                                                  .decrementProductCount(
+                                                      products[index])),
+                                          Text(
+                                            products[index].quantity.toString(),
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          CustomCounter(
+                                              icon: Icon(Icons.add),
+                                              onPress: () => orderBloc
+                                                  .incrementProductCount(
+                                                      products[index])),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ))
+                      ],
                     ),
                   )));
         });
+  }
+}
+
+class CustomCounter extends StatelessWidget {
+  final Icon icon;
+  final Function onPress;
+
+  CustomCounter({@required this.icon, @required this.onPress});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: RawMaterialButton(
+        constraints: BoxConstraints.tightFor(width: 30, height: 30),
+        elevation: 6.0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30 * 0.2)),
+        fillColor: Color(0xFF65A34A),
+        onPressed: onPress,
+        child: icon,
+      ),
+    );
   }
 }
 

@@ -1,11 +1,14 @@
 import 'package:canteen_app/TabbedScreen/tabbed_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'Models/order.dart';
 import 'functional/attributes.dart';
 
 void main() {
   runApp(MyApp());
 }
+
+final List<ProductForOrder> orderProductsList = List<ProductForOrder>();
 
 class MyApp extends StatelessWidget {
   @override

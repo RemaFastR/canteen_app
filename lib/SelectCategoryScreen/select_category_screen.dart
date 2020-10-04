@@ -70,7 +70,7 @@ class ProductsListWidget extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio:
-                (1.8 * ScreenSize.itemWidth / ScreenSize.itemHeight),
+                (1.5 * ScreenSize.itemWidth / (ScreenSize.itemHeight)),
           ),
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
@@ -86,6 +86,8 @@ class ProductsListWidget extends StatelessWidget {
                         child: Opacity(
                             opacity: a1.value,
                             child: CustomDialog(
+                              productId: products[index].id,
+                              title: products[index].title,
                               description: products[index].description,
                               grammar: products[index].grammar,
                               cost: products[index].cost,
@@ -106,30 +108,69 @@ class ProductsListWidget extends StatelessWidget {
                   ),
                   color: titlesColor,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: GridTile(
-                          footer: Material(
-                            color: Colors.transparent,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(8))),
-                            clipBehavior: Clip.antiAlias,
-                            child: GridTileBar(
-                              backgroundColor: cardsColor,
-                              title: Row(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                        color: cardsColor,
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                products[index].image,
+                                fit: BoxFit.fill,
+                              ),
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(products[index].title),
-                                  Text(products[index].cost),
+                                  Expanded(
+                                    child: Text(
+                                      products[index].title,
+                                      style: TextStyle(
+                                        color: titlesColor,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                      child: Text(
+                                          products[index].cost.toString() + '₽',
+                                          style: TextStyle(
+                                              color: titlesColor,
+                                              fontSize: 17))),
                                 ],
                               ),
-                            ),
-                          ),
-                          child: Image.asset(
-                            products[index].image,
-                            fit: BoxFit.fill,
-                          )))),
+                            ])),
+                  )
+                  //ClipRRect(
+                  //     borderRadius: BorderRadius.circular(8.0),
+                  //     child: GridTile(
+                  //         footer: Material(
+                  //           color: Colors.transparent,
+                  //           shape: const RoundedRectangleBorder(
+                  //               borderRadius: BorderRadius.vertical(
+                  //                   bottom: Radius.circular(8))),
+                  //           clipBehavior: Clip.antiAlias,
+                  //           child: GridTileBar(
+                  //             backgroundColor: cardsColor,
+                  //             title: Row(
+                  //               mainAxisAlignment:
+                  //                   MainAxisAlignment.spaceBetween,
+                  //               children: [
+                  //                 Container(child: Text(products[index].title)),
+                  //                 Container(
+                  //                     child: Text(
+                  //                         products[index].cost.toString())),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         child: Image.asset(
+                  //           products[index].image,
+                  //           fit: BoxFit.fill,
+                  //         )))
+                  ),
             );
           }),
     );
@@ -137,13 +178,16 @@ class ProductsListWidget extends StatelessWidget {
 }
 
 class CustomDialog extends StatelessWidget {
-  final String description, grammar, cost, imgSrc;
+  final String title, description, grammar, imgSrc;
+  final int productId, cost;
 
   CustomDialog(
-      {@required this.description,
+      {@required this.productId,
+      @required this.description,
       @required this.grammar,
       @required this.cost,
-      this.imgSrc});
+      this.imgSrc,
+      this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +223,7 @@ class CustomDialog extends StatelessWidget {
                       style: TextStyle(color: productInfoColor, fontSize: 19),
                     ),
                     Text(
-                      cost,
+                      cost.toString() + '₽',
                       style:
                           TextStyle(color: orderProductCostColor, fontSize: 19),
                     ),
@@ -197,6 +241,8 @@ class CustomDialog extends StatelessWidget {
                         fillColor: cardsColor,
                         splashColor: cardsColor,
                         onPressed: () {
+                          categoryBloc.addInOrder(this.productId, this.title,
+                              this.imgSrc, this.cost);
                           _showToast(scaffoldContext);
                           Navigator.of(context).pop(); // To close the dialog
                         },

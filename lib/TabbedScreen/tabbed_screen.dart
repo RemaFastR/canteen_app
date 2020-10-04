@@ -46,17 +46,6 @@ class _TabbedScreenState extends State<TabbedScreen> {
                   )),
             ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(248, 144, 144, 1),
-        foregroundColor: Colors.black,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/images/icons/arrow_back.png'),
-        ),
-      ),
     );
   }
 
