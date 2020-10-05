@@ -2,6 +2,7 @@ import 'package:canteen_app/main.dart';
 import 'package:flutter/material.dart';
 
 class Order {
+  static int staticOrderPrice;
   List<ProductForOrder> orderList;
 
   Order() {
@@ -11,6 +12,14 @@ class Order {
   Map<String, dynamic> toJson() => {
         'products': orderList,
       };
+
+  static int getOrderPrice() {
+    int orderPrice;
+    for (var item in orderProductsList) {
+      orderPrice += item.cost * item.quantity;
+    }
+    return orderPrice;
+  }
 }
 
 class ProductForOrder {

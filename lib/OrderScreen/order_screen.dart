@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/OrderScreen/order_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
@@ -78,14 +76,26 @@ class CreateOrderList extends StatelessWidget {
             },
           ),
         ),
-        ConfirmWidget()
+        StreamBuilder(
+          stream: orderBloc.orderStream,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<ProductForOrder>> snapshot) {
+            return ConfirmWidget(
+              orderPrice: Order.staticOrderPrice,
+              products: snapshot.data,
+            );
+          },
+        ),
       ],
     );
   }
 }
 
 class ConfirmWidget extends StatelessWidget {
-  const ConfirmWidget({Key key}) : super(key: key);
+  final int orderPrice;
+  final List<ProductForOrder> products;
+
+  ConfirmWidget({@required this.orderPrice, @required this.products});
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +137,7 @@ class ConfirmWidget extends StatelessWidget {
                       orderNumTitle: 'Номер заказа',
                       orderNumber: '123');
                   orderBloc.sendOrder(createOrderDialog, context);
+                  orderBloc.goToCheck(context, 123, orderPrice, products);
                 }
               },
               child: Text(

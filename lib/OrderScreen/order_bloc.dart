@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:canteen_app/Models/order.dart';
+import 'package:canteen_app/OrderScreen/check_screen.dart';
 import 'package:canteen_app/OrderScreen/order_screen.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:canteen_app/functional/main_bloc.dart';
@@ -38,6 +39,7 @@ class OrderBloc implements Bloc {
     for (var item in orderProductsList) {
       orderPrice += item.cost * item.quantity;
     }
+    Order.staticOrderPrice = orderPrice;
     _orderPriceFetcher.sink.add(orderPrice);
   }
 
@@ -86,6 +88,18 @@ class OrderBloc implements Bloc {
           context: context,
           pageBuilder: (context, animation1, animation2) {});
     }
+  }
+
+  goToCheck(BuildContext context, int orderServerNumber, int orderPrice,
+      List<ProductForOrder> products) async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CreateOrderScreen(
+                  productsInCheck: products,
+                  orderPrice: orderPrice,
+                  orderServerNumber: orderServerNumber,
+                )));
   }
 
   @override
