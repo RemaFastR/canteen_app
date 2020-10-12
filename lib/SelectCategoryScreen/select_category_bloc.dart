@@ -20,7 +20,7 @@ class SelectCategoryBloc implements Bloc {
     _categoryFetcher.sink.add(categories);
   }
 
-  addInOrder(int id, String title, String image, int cost,
+  addInOrder(int id, String title, String image, double cost,
       BuildContext scaffoldContext) async {
     bool checker = false;
     ProductForOrder productForOrder = new ProductForOrder(
@@ -32,9 +32,8 @@ class SelectCategoryBloc implements Bloc {
     }
     print('------------ Order ------------');
     if (checker) {
-      print('object');
-      showToast(scaffoldContext, 'Блюдо блюдо уже добавлено в корзину',
-          cleanOrderButtonColor);
+      // showToast(scaffoldContext, 'Блюдо блюдо уже добавлено в корзину',
+      //     cleanOrderButtonColor);
     } else {
       print("product with id ${id} added in order");
       showToast(scaffoldContext, 'Блюдо добавлено в корзину', productInfoColor);

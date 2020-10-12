@@ -2,7 +2,7 @@ import 'package:canteen_app/main.dart';
 import 'package:flutter/material.dart';
 
 class Order {
-  static int staticOrderPrice;
+  static double staticOrderPrice;
   List<ProductForOrder> orderList;
 
   Order() {
@@ -13,8 +13,8 @@ class Order {
         'products': orderList,
       };
 
-  static int getOrderPrice() {
-    int orderPrice;
+  static double getOrderPrice() {
+    double orderPrice;
     for (var item in orderProductsList) {
       orderPrice += item.cost * item.quantity;
     }
@@ -27,7 +27,7 @@ class ProductForOrder {
   int quantity;
   String title;
   String image;
-  int cost;
+  double cost;
 
   ProductForOrder(
       {@required this.id,

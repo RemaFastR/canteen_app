@@ -1,5 +1,7 @@
 import 'package:canteen_app/MenuScreen/menu_bloc.dart';
 import 'package:canteen_app/Models/category.dart';
+import 'package:canteen_app/Models/product.dart';
+import 'package:canteen_app/SelectCategoryScreen/select_category_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
 
@@ -9,15 +11,6 @@ class MenuScreen extends StatefulWidget {
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
-
-final List<Category> _categories = [
-  Category(1, 'Супы', 'assets/images/categories/soup.png'),
-  Category(2, 'Гарниры', 'assets/images/categories/garnish.png'),
-  Category(3, 'Мясные блюда', 'assets/images/categories/meat.png'),
-  Category(4, 'Салаты', 'assets/images/categories/salad.png'),
-  Category(5, 'Напитки', 'assets/images/categories/drink.png'),
-  Category(6, 'Десерты', 'assets/images/categories/cake.png')
-];
 
 // var size;
 // double itemHeight;
@@ -35,6 +28,7 @@ class _MenuScreenState extends State<MenuScreen> {
     /*24 - notification bar на Android*/
     ScreenSize.itemHeight = (ScreenSize.size.height - kToolbarHeight - 24) / 2;
     ScreenSize.itemWidth = ScreenSize.size.width / 2;
+    menuBloc.getCategories();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,7 +37,19 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
       ),
       body: Container(
-        child: CategoriesWidget(_categories),
+        child: StreamBuilder(
+          stream: menuBloc.categoryStream,
+          builder: (context, AsyncSnapshot<List<Category>> snapshot) {
+            if (snapshot.hasData) {
+              print("Categories Snapshot Size: ${snapshot.data.length}");
+              //print(json.encode(snapshot.data));
+              return CategoriesWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
@@ -79,11 +85,22 @@ class CategoriesWidget extends StatelessWidget {
                 color: cardsColor,
                 child: Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Image.asset(
-                        categories[index].image,
-                        width: 150,
-                        height: 150,
+                      // Image.asset(
+                      //   'assets/images/categories/soup.png',
+                      //   width: 150,
+                      //   height: 150,
+                      // ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Image.network(
+                          categories[index].products[0].image +
+                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
+                          width: 150,
+                          height: 150,
+                        ),
                       ),
                       Text(
                         categories[index].title,

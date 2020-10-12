@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class CreateOrderScreen extends StatefulWidget {
-  final int orderServerNumber, orderPrice;
+  final int orderServerNumber;
+  double orderPrice;
   final List<ProductForOrder> productsInCheck;
   CreateOrderScreen(
       {Key key,
@@ -25,7 +26,8 @@ class CreateOrderScreen extends StatefulWidget {
 }
 
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
-  final int orderServerNumber, orderPrice;
+  final int orderServerNumber;
+  double orderPrice;
   final List<ProductForOrder> productsInCheck;
   _CreateOrderScreenState(
       {@required this.orderServerNumber,
@@ -57,7 +59,8 @@ const orderTitleTextColor = Color.fromRGBO(64, 55, 55, 1);
 const totalLabelTextColor = Color.fromRGBO(164, 74, 63, 1);
 
 class CheckScreen extends StatelessWidget {
-  final int orderServerNumber, orderPrice;
+  final int orderServerNumber;
+  double orderPrice;
   final List<ProductForOrder> productsInCheck;
 
   CheckScreen(
@@ -175,7 +178,9 @@ class ProductsInCheckList extends StatelessWidget {
                       padding: EdgeInsets.all(10),
                       child: Row(
                         children: [
-                          Image.asset(productsInCheck[index].image) ?? "",
+                          //Image.asset(productsInCheck[index].image) ?? "",
+                          Image.network(productsInCheck[index].image +
+                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
                           Expanded(
                               child: Container(
                             padding: EdgeInsets.only(left: 10),

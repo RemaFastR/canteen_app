@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:canteen_app/TabbedScreen/tabbed_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'Models/order.dart';
 import 'functional/attributes.dart';
+//import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 
 void main() {
+  //debugPaintSizeEnabled = true;
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
 }
 
@@ -26,5 +31,14 @@ class MyApp extends StatelessWidget {
       ),
       home: TabbedScreen(),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

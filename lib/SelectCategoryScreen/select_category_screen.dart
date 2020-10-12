@@ -17,17 +17,22 @@ class SelectCategoryScreen extends StatefulWidget {
 // var size;
 // double itemHeight;
 // double itemWidth;
+List<Product> prdcts = [
+  Product(
+      id: 1,
+      image: 'assets/images/categories/soup.png',
+      title: 'Суп с фрикадельками',
+      cost: 22,
+      grammar: 22,
+      composition: 'assets/images/categories/soup.png',
+      description: 'assets/images/categories/soup.png')
+];
 
 BuildContext scaffoldContext;
 
 class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
   @override
   Widget build(BuildContext context) {
-    // size = MediaQuery.of(context).size;
-
-    // /*24 - notification bar на Android*/
-    // itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    // itemWidth = size.width / 2;
     scaffoldContext = context;
     categoryBloc.getSelectCategory(categoryId);
     return Scaffold(
@@ -118,7 +123,6 @@ class ProductsListWidget extends StatelessWidget {
                     barrierLabel: '',
                     context: context,
                     pageBuilder: (context, animation1, animation2) {});
-                //menuBloc.goToSelectedCategory(context);
               },
               child: Card(
                   shape: RoundedRectangleBorder(
@@ -131,27 +135,44 @@ class ProductsListWidget extends StatelessWidget {
                         color: cardsColor,
                         padding: EdgeInsets.all(10),
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                products[index].image,
-                                fit: BoxFit.fill,
+                              Container(
+                                height: 100,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Image.network(
+                                  products[index].image +
+                                      '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Text(
+                                products[index].title,
+                                style: TextStyle(
+                                  color: titlesColor,
+                                  fontSize: 18,
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Expanded(
+                                  Flexible(
+                                    flex: 2,
                                     child: Text(
-                                      products[index].title,
+                                      products[index].grammar.toString() +
+                                          ' гр.',
                                       style: TextStyle(
                                         color: titlesColor,
                                         fontSize: 18,
                                       ),
                                     ),
                                   ),
-                                  Container(
+                                  Flexible(
+                                      flex: 1,
                                       child: Text(
                                           products[index].cost.toString() + '₽',
                                           style: TextStyle(
@@ -168,8 +189,9 @@ class ProductsListWidget extends StatelessWidget {
 }
 
 class CustomDialog extends StatelessWidget {
-  final String title, description, grammar, imgSrc;
-  final int productId, cost;
+  final String title, description, imgSrc;
+  final int productId, grammar;
+  final double cost;
 
   CustomDialog(
       {@required this.productId,
@@ -182,42 +204,63 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      elevation: 0.0,
-      backgroundColor: titlesColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 0.0,
+        backgroundColor: titlesColor,
+        child: dialog(context));
+  }
+
+  Widget dialog(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 0.0, right: 0.0),
       child: Stack(
         children: [
           Container(
-            height: ScreenSize.itemHeight * 1.5,
-            padding: EdgeInsets.all(15),
+            //height: ScreenSize.itemHeight * 1.5,
+            padding: EdgeInsets.only(top: 10.0, bottom: 10),
+            margin: EdgeInsets.only(top: 13.0, right: 8.0),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: ScreenSize.itemHeight / 2,
-                  height: ScreenSize.itemHeight / 2,
-                  child: Image.asset(imgSrc),
+                Center(
+                  child: Container(
+                    width: ScreenSize.itemHeight / 2,
+                    height: ScreenSize.itemHeight / 2,
+                    child: Image.network(imgSrc +
+                        '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
+                  ),
                 ),
-                Text(
-                  description,
-                  style: TextStyle(color: productInfoColor, fontSize: 17),
-                  textAlign: TextAlign.justify,
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      grammar,
-                      style: TextStyle(color: productInfoColor, fontSize: 19),
-                    ),
-                    Text(
-                      cost.toString() + '₽',
-                      style:
-                          TextStyle(color: orderProductCostColor, fontSize: 19),
-                    ),
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        description,
+                        style: TextStyle(color: productInfoColor, fontSize: 17),
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            grammar.toString() + ' гр.',
+                            style: TextStyle(
+                                color: productInfoColor, fontSize: 19),
+                          ),
+                          Text(
+                            cost.toString() + '₽',
+                            style: TextStyle(
+                                color: orderProductCostColor, fontSize: 19),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(height: 10),
                 Align(

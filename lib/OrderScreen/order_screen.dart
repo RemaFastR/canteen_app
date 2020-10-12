@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/OrderScreen/order_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
@@ -50,7 +52,11 @@ class CreateOrderList extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                  child: Text(
+                'Ваша корзина пустая',
+                style: TextStyle(fontSize: 18),
+              ));
             }),
         Padding(
             padding: EdgeInsets.only(
@@ -67,7 +73,7 @@ class CreateOrderList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           child: StreamBuilder(
             stream: orderBloc.orderPriceStream,
-            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
               return Container(
                 child: Text('Итог: ${snapshot.data ?? 0.toString()}' + '₽',
                     style: TextStyle(
@@ -92,7 +98,7 @@ class CreateOrderList extends StatelessWidget {
 }
 
 class ConfirmWidget extends StatelessWidget {
-  final int orderPrice;
+  final double orderPrice;
   final List<ProductForOrder> products;
 
   ConfirmWidget({@required this.orderPrice, @required this.products});
@@ -131,13 +137,8 @@ class ConfirmWidget extends StatelessWidget {
                             ]);
                       });
                 } else {
-                  CreateOrderDialog createOrderDialog = CreateOrderDialog(
-                      messageText:
-                          'Спасибо за ваш заказ! Он принят в обработку.',
-                      orderNumTitle: 'Номер заказа',
-                      orderNumber: '123');
-                  orderBloc.sendOrder(createOrderDialog, context);
-                  orderBloc.goToCheck(context, 123, orderPrice, products);
+                  orderBloc.sendOrder(context, products);
+                  //orderBloc.goToCheck(context, 123, products);
                 }
               },
               child: Text(
@@ -230,8 +231,13 @@ class OrderListWidget extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(10),
                     child: Row(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Image.asset(products[index].image) ?? "",
+                        Container(
+                          height: ScreenSize.itemHeight / 2,
+                          child: Image.network(products[index].image +
+                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'), //Image.asset(products[index].image) ?? "",
+                        ),
                         Expanded(
                             child: Container(
                           padding: EdgeInsets.only(left: 10),
@@ -245,15 +251,14 @@ class OrderListWidget extends StatelessWidget {
                                     TextStyle(color: titlesColor, fontSize: 23),
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     products[index].cost.toString() + '₽' ?? "",
                                     style: TextStyle(
                                         color: orderProductCostColor,
                                         fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    width: ScreenSize.itemWidth / 2.6,
                                   ),
                                   StreamBuilder(
                                     stream: orderBloc.orderCountStream,

@@ -1,3 +1,5 @@
+import 'package:canteen_app/MenuScreen/menu_screen.dart';
+import 'package:canteen_app/Models/category.dart';
 import 'package:flutter/material.dart';
 
 const barsColor = Color.fromRGBO(231, 181, 127, 1);
@@ -40,4 +42,8 @@ class CustomAlertDialog extends StatelessWidget {
         ),
         actions: buttons);
   }
+}
+
+class StaticVariables {
+  static List<Category> staticCategories;
 }
