@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:canteen_app/TabbedScreen/tabbed_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import 'Models/order.dart';
 import 'functional/attributes.dart';
 //import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
@@ -18,6 +18,9 @@ final List<ProductForOrder> orderProductsList = List<ProductForOrder>();
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

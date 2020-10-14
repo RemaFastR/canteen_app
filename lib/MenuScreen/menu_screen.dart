@@ -19,11 +19,6 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
-    // size = MediaQuery.of(context).size;
-
-    // /*24 - notification bar на Android*/
-    // itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    // itemWidth = size.width / 2;
     ScreenSize.size = MediaQuery.of(context).size;
     /*24 - notification bar на Android*/
     ScreenSize.itemHeight = (ScreenSize.size.height - kToolbarHeight - 24) / 2;
@@ -70,8 +65,8 @@ class CategoriesWidget extends StatelessWidget {
           itemCount: categories.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio:
-                (1.8 * ScreenSize.itemWidth / ScreenSize.itemHeight),
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
           ),
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
@@ -85,27 +80,26 @@ class CategoriesWidget extends StatelessWidget {
                 color: cardsColor,
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Image.asset(
-                      //   'assets/images/categories/soup.png',
-                      //   width: 150,
-                      //   height: 150,
-                      // ),
                       Container(
+                        width: ScreenSize.itemWidth / 1.3,
+                        height: ScreenSize.itemHeight / 3,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20)),
                         child: Image.network(
                           categories[index].products[0].image +
                               '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
-                          width: 150,
-                          height: 150,
                         ),
                       ),
                       Text(
                         categories[index].title,
-                        style:
-                            const TextStyle(color: titlesColor, fontSize: 22),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: titlesColor,
+                          fontSize: 22,
+                        ),
                       )
                     ],
                   ),

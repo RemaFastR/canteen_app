@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:canteen_app/MenuScreen/menu_repos.dart';
 import 'package:canteen_app/Models/category.dart';
 import 'package:canteen_app/SelectCategoryScreen/select_category_screen.dart';
@@ -23,7 +21,6 @@ class MenuBloc implements Bloc {
   getCategories() async {
     List<Category> categories = await _categoryRepository.getCategories();
     StaticVariables.staticCategories = categories;
-    //print(jsonEncode(categories));
     _categoryFetcher.sink.add(categories);
   }
 

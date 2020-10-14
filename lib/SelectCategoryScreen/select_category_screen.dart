@@ -14,20 +14,6 @@ class SelectCategoryScreen extends StatefulWidget {
   _SelectCategoryScreenState createState() => _SelectCategoryScreenState();
 }
 
-// var size;
-// double itemHeight;
-// double itemWidth;
-List<Product> prdcts = [
-  Product(
-      id: 1,
-      image: 'assets/images/categories/soup.png',
-      title: 'Суп с фрикадельками',
-      cost: 22,
-      grammar: 22,
-      composition: 'assets/images/categories/soup.png',
-      description: 'assets/images/categories/soup.png')
-];
-
 BuildContext scaffoldContext;
 
 class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
@@ -287,22 +273,22 @@ class CustomDialog extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            right: 0.0,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Align(
-                alignment: Alignment.topRight,
-                child: CircleAvatar(
-                  radius: 14.0,
-                  backgroundColor: orderProductCostColor,
-                  child: Icon(Icons.close, color: titlesColor),
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   right: 0.0,
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //     child: Align(
+          //       alignment: Alignment.topRight,
+          //       child: CircleAvatar(
+          //         radius: 14.0,
+          //         backgroundColor: orderProductCostColor,
+          //         child: Icon(Icons.close, color: titlesColor),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
