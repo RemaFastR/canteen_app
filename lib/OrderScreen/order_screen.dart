@@ -75,7 +75,8 @@ class CreateOrderList extends StatelessWidget {
             stream: orderBloc.orderPriceStream,
             builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
               return Container(
-                child: Text('Итог: ${snapshot.data ?? 0.toString()}' + '₽',
+                child: Text(
+                    'Итог: ${snapshot.data ?? 0.toStringAsFixed(2)}' + '₽',
                     style: TextStyle(
                         color: Theme.of(context).accentColor, fontSize: 25)),
               );
@@ -255,7 +256,9 @@ class OrderListWidget extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    products[index].cost.toString() + '₽' ?? "",
+                                    products[index].cost.toStringAsFixed(2) +
+                                            '₽' ??
+                                        "",
                                     style: TextStyle(
                                         color: orderProductCostColor,
                                         fontSize: 18),

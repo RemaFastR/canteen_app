@@ -125,7 +125,7 @@ class CheckScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              orderPrice.toString() + '₽',
+                              orderPrice.toStringAsFixed(2) + '₽',
                               style: TextStyle(
                                   color: totalLabelTextColor,
                                   fontSize: 22,
@@ -220,7 +220,7 @@ class ProductsInCheckList extends StatelessWidget {
                                       (productsInCheck[index].cost *
                                                       productsInCheck[index]
                                                           .quantity)
-                                                  .toString() +
+                                                  .toStringAsFixed(2) +
                                               '₽' ??
                                           "",
                                       style: TextStyle(

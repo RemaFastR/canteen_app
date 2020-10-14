@@ -112,7 +112,7 @@ class ProductsListWidget extends StatelessWidget {
               },
               child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   color: titlesColor,
                   child: ClipRRect(
@@ -121,18 +121,19 @@ class ProductsListWidget extends StatelessWidget {
                         color: cardsColor,
                         padding: EdgeInsets.all(10),
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                height: 100,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Image.network(
-                                  products[index].image +
-                                      '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
-                                  fit: BoxFit.fill,
+                                //width: ScreenSize.itemWidth / 1.3,
+                                height: ScreenSize.itemHeight / 3.3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    products[index].image +
+                                        '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               Text(
@@ -146,8 +147,8 @@ class ProductsListWidget extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Flexible(
-                                    flex: 2,
+                                  Expanded(
+                                    //flex: 2,
                                     child: Text(
                                       products[index].grammar.toString() +
                                           ' гр.',
@@ -157,10 +158,14 @@ class ProductsListWidget extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Flexible(
-                                      flex: 1,
+                                  Expanded(
+                                      //flex: 1,
                                       child: Text(
-                                          products[index].cost.toString() + '₽',
+                                          products[index]
+                                                  .cost
+                                                  .toStringAsFixed(2) +
+                                              '₽',
+                                          textAlign: TextAlign.right,
                                           style: TextStyle(
                                               color: titlesColor,
                                               fontSize: 17))),
@@ -206,17 +211,20 @@ class CustomDialog extends StatelessWidget {
           Container(
             //height: ScreenSize.itemHeight * 1.5,
             padding: EdgeInsets.only(top: 10.0, bottom: 10),
-            margin: EdgeInsets.only(top: 13.0, right: 8.0),
+            //margin: EdgeInsets.all(13),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: Container(
-                    width: ScreenSize.itemHeight / 2,
+                    //width: ScreenSize.itemHeight / 1.5,
+                    padding: EdgeInsets.all(10),
                     height: ScreenSize.itemHeight / 2,
-                    child: Image.network(imgSrc +
-                        '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(imgSrc +
+                            '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf')),
                   ),
                 ),
                 Padding(
@@ -239,7 +247,7 @@ class CustomDialog extends StatelessWidget {
                                 color: productInfoColor, fontSize: 19),
                           ),
                           Text(
-                            cost.toString() + '₽',
+                            cost.toStringAsFixed(2) + '₽',
                             style: TextStyle(
                                 color: orderProductCostColor, fontSize: 19),
                           ),

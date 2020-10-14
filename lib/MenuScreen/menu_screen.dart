@@ -75,7 +75,7 @@ class CategoriesWidget extends StatelessWidget {
               },
               child: Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 color: cardsColor,
                 child: Center(
@@ -84,13 +84,16 @@ class CategoriesWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: ScreenSize.itemWidth / 1.3,
-                        height: ScreenSize.itemHeight / 3,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Image.network(
-                          categories[index].products[0].image +
-                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
+                        //width: ScreenSize.itemWidth / 1.3,
+                        //height: ScreenSize.itemHeight / 3.3,
+                        padding: EdgeInsets.all(10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            categories[index].products[0].image +
+                                '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Text(
