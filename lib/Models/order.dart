@@ -36,9 +36,9 @@ class ProductForOrder {
       this.image,
       this.cost});
 
-  // ProductForOrder.fromJson(Map<String, dynamic> json)
-  //     : name = json['name'],
-  //       email = json['email'];
+  factory ProductForOrder.fromJson(Map<String, dynamic> json) {
+    return ProductForOrder(id: json["id"], quantity: json["quantity"]);
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,

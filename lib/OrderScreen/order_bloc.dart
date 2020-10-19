@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,6 +9,7 @@ import 'package:canteen_app/OrderScreen/order_repos.dart';
 import 'package:canteen_app/OrderScreen/order_screen.dart';
 import 'package:canteen_app/functional/main_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../main.dart';
@@ -18,10 +20,12 @@ class OrderBloc implements Bloc {
   final _orderFetcher = PublishSubject<List<ProductForOrder>>();
   final _orderPriceFetcher = PublishSubject<double>();
   final _orderCountFetcher = PublishSubject<int>();
+  final _orderStatusFetcher = PublishSubject<String>();
 
   Observable<List<ProductForOrder>> get orderStream => _orderFetcher.stream;
   Observable<double> get orderPriceStream => _orderPriceFetcher.stream;
   Observable<int> get orderCountStream => _orderCountFetcher.stream;
+  Observable<String> get orderStatusStream => _orderStatusFetcher.stream;
 
   getOrderList() async {
     _orderFetcher.sink.add(orderProductsList);
@@ -65,14 +69,49 @@ class OrderBloc implements Bloc {
     }
   }
 
+  int orderNum;
   sendOrder(BuildContext context, List<ProductForOrder> products) async {
     if (orderProductsList.length == 0)
       print("Ваша корзина пустая!");
     else {
-      int orderNum = await _orderRepository.createOrder();
+      orderNum = await _orderRepository.createOrder();
+      //LocalStorage orderStorage = new LocalStorage('orderNum');
+      //orderStorage.setItem('orderNum', orderNum);
+      print('Order Id $orderNum is saved on cache');
       goToCheck(context, orderNum, products);
       showCheckDialog(context, orderNum);
     }
+  }
+
+  getOrderById() async {
+    //LocalStorage orderStorage = new LocalStorage('orderNum');
+    //var orderNum = orderStorage.getItem('orderNum') ?? 0;
+    if (orderNum != 0) {
+      String orderInfo = await _orderRepository.getOrderById(orderNum);
+      print(orderInfo);
+      ReturnedOrder returnedOrder;
+      Map orderMap = jsonDecode(orderInfo);
+      returnedOrder = ReturnedOrder.fromJson(orderMap);
+      print(returnedOrder);
+      switch (returnedOrder.currentState) {
+        case 0:
+          _orderStatusFetcher.sink.add('Создан');
+          break;
+        case 1:
+          _orderStatusFetcher.sink.add('Готовится');
+          break;
+        case 2:
+          _orderStatusFetcher.sink.add('Готов');
+          break;
+        default:
+          _orderStatusFetcher.sink.add('Неизвестно');
+      }
+    } else
+      print('Order Id is empty');
+  }
+
+  getOrderStatus() async {
+    Timer.periodic(Duration(seconds: 10), (_) => getOrderById());
   }
 
   showCheckDialog(BuildContext context, int orderNum) {
@@ -114,7 +153,10 @@ class OrderBloc implements Bloc {
     _orderFetcher.close();
     _orderPriceFetcher.close();
     _orderCountFetcher.close();
+    _orderStatusFetcher.close();
   }
 }
 
 final orderBloc = OrderBloc();
+
+enum OrderState { Created, Processing, Completed }

@@ -1,9 +1,9 @@
 import 'package:canteen_app/MenuScreen/menu_bloc.dart';
 import 'package:canteen_app/Models/category.dart';
-import 'package:canteen_app/Models/product.dart';
-import 'package:canteen_app/SelectCategoryScreen/select_category_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
+import 'package:canteen_app/functional/check_internet_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key key}) : super(key: key);
@@ -11,10 +11,6 @@ class MenuScreen extends StatefulWidget {
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
-
-// var size;
-// double itemHeight;
-// double itemWidth;
 
 class _MenuScreenState extends State<MenuScreen> {
   @override
@@ -31,19 +27,44 @@ class _MenuScreenState extends State<MenuScreen> {
           style: TextStyle(color: productInfoColor),
         ),
       ),
-      body: Container(
-        child: StreamBuilder(
-          stream: menuBloc.categoryStream,
-          builder: (context, AsyncSnapshot<List<Category>> snapshot) {
-            if (snapshot.hasData) {
-              print("Categories Snapshot Size: ${snapshot.data.length}");
-              //print(json.encode(snapshot.data));
-              return CategoriesWidget(snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            return Center(child: CircularProgressIndicator());
-          },
+      body: StreamProvider<NetworkStatus>(
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          onlineChild: Container(
+            child: StreamBuilder(
+              stream: menuBloc.categoryStream,
+              builder: (context, AsyncSnapshot<List<Category>> snapshot) {
+                if (snapshot.hasData) {
+                  print("Categories Snapshot Size: ${snapshot.data.length}");
+                  return CategoriesWidget(snapshot.data);
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+          offlineChild: Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.outlet,
+                  size: 50,
+                  color: productInfoColor,
+                ),
+                Text(
+                  "Проверьте подключение к интернету!",
+                  style: TextStyle(
+                      color: productInfoColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.0),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

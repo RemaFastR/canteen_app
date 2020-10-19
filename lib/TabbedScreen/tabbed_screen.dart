@@ -1,6 +1,5 @@
 import 'package:canteen_app/MenuScreen/menu_screen.dart';
 import 'package:canteen_app/OrderScreen/order_screen.dart';
-import 'package:canteen_app/functional/attributes.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -35,30 +34,16 @@ class _TabbedScreenState extends State<TabbedScreen> {
             buttonBackgroundColor: Color.fromRGBO(231, 181, 127, 1),
             color: Color.fromRGBO(231, 181, 127, 1),
             height: 50,
-            //currentIndex: _selectedIndex,
             onTap: _onItemTapped,
-            //type: BottomNavigationBarType.shifting,
             items: [
-              //BottomNavigationBarItem(
-              //icon:
               Icon(
                 Icons.home,
                 color: Colors.white,
               ),
-              // title: Text(
-              //   'Меню',
-              //   style: TextStyle(color: Colors.white),
-              // )),
-              // BottomNavigationBarItem(
-              //     icon:
               Icon(
                 Icons.shopping_basket,
                 color: Colors.white,
               ),
-              // title: Text(
-              //   'Корзина',
-              //   style: TextStyle(color: Colors.white),
-              // )),
             ]),
       ),
     );

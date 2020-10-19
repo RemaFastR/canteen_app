@@ -8,7 +8,7 @@ class Requests {
     if (response.statusCode == 200) {
       return response.body;
     } else {
-      throw Exception('Ошибка при загрузке категорий');
+      throw Exception('Ошибка при загрузке данных');
     }
   }
 
@@ -24,6 +24,8 @@ class Requests {
       );
       if (response.statusCode == 201) {
         return response.body;
+      } else {
+        throw Exception('Ошибка при создании заказа');
       }
     } catch (e) {
       print(e);

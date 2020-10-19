@@ -33,11 +33,6 @@ class _OrderScreenState extends State<OrderScreen> {
 class CreateOrderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // size = MediaQuery.of(context).size;
-
-    // /*24 - notification bar на Android*/
-    // itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    // itemWidth = size.width / 2;
     orderBloc.getOrderList();
     orderBloc.getOrderPrice();
     return Column(
@@ -139,7 +134,6 @@ class ConfirmWidget extends StatelessWidget {
                       });
                 } else {
                   orderBloc.sendOrder(context, products);
-                  //orderBloc.goToCheck(context, 123, products);
                 }
               },
               child: Text(
@@ -175,6 +169,7 @@ class ConfirmWidget extends StatelessWidget {
                             ]);
                       });
                 } else {
+                  //orderBloc.getOrderById();
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -237,7 +232,7 @@ class OrderListWidget extends StatelessWidget {
                         Container(
                           height: ScreenSize.itemHeight / 2,
                           child: Image.network(products[index].image +
-                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'), //Image.asset(products[index].image) ?? "",
+                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
                         ),
                         Expanded(
                             child: Container(

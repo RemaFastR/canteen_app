@@ -5,8 +5,6 @@ import 'package:canteen_app/OrderScreen/order_bloc.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:flutter/material.dart';
 
-import '../main.dart';
-
 class CreateOrderScreen extends StatefulWidget {
   final int orderServerNumber;
   double orderPrice;
@@ -71,6 +69,7 @@ class CheckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     orderBloc.getOrderPrice();
+    orderBloc.getOrderStatus();
     return Container(
       padding: EdgeInsets.all(15),
       child: Column(
@@ -107,6 +106,37 @@ class CheckScreen extends StatelessWidget {
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold),
                             )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Статус заказа:',
+                              style: TextStyle(
+                                  color: orderTitleTextColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            StreamBuilder(
+                              stream: orderBloc.orderStatusStream,
+                              builder:
+                                  (context, AsyncSnapshot<String> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data,
+                                    style: TextStyle(
+                                        color: orderTitleTextColor,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text(snapshot.error.toString());
+                                }
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              },
+                            ),
                           ],
                         ),
                         DividingLine(),
