@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key key}) : super(key: key);
+  static BuildContext menuScreenContext;
 
   @override
   _MenuScreenState createState() => _MenuScreenState();
@@ -15,6 +16,7 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
+    MenuScreen.menuScreenContext = context;
     ScreenSize.size = MediaQuery.of(context).size;
     /*24 - notification bar на Android*/
     ScreenSize.itemHeight = (ScreenSize.size.height - kToolbarHeight - 24) / 2;

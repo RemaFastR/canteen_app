@@ -55,7 +55,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\re
 	android:label
 		ADDED from G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:11:9-33
 	android:icon
-		ADDED from G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:12:9-43
+		ADDED from G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:12:9-36
 	android:name
 		ADDED from G:\Programming\Flutter\course_work\canteen_app\android\app\src\main\AndroidManifest.xml:10:9-57
 activity#com.example.canteen_app.MainActivity

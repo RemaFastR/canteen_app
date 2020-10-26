@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'package:canteen_app/MenuScreen/menu_screen.dart';
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/Models/product.dart';
 import 'package:canteen_app/Models/returned_order.dart';
+import 'package:canteen_app/OrderScreen/order_screen.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:canteen_app/functional/requests.dart';
 
 import 'package:canteen_app/Models/category.dart';
+import 'package:flutter/material.dart';
 
 class ApiProvider {
   final String url = "https://canteen-chsu.ru/api";
@@ -23,6 +26,22 @@ class ApiProvider {
       return categories;
     } catch (e) {
       print(e);
+      showDialog(
+          context: MenuScreen.menuScreenContext,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(
+                alertTitle: 'Произошла ошибка',
+                alertText: e,
+                buttons: <Widget>[
+                  new FlatButton(
+                    textColor: cleanOrderButtonColor,
+                    child: new Text("Хорошо"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]);
+          });
     }
   }
 
@@ -39,9 +58,23 @@ class ApiProvider {
     try {
       return await Requests.getRequest('$url/orders/$id' +
           '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf');
-      // ReturnedOrder returnedOrder =
-      //     ReturnedOrder.fromJson(jsonDecode(responseBody));
     } catch (e) {
+      showDialog(
+          context: OrderScreen.orderScreenContext,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(
+                alertTitle: 'Произошла ошибка',
+                alertText: e,
+                buttons: <Widget>[
+                  new FlatButton(
+                    textColor: cleanOrderButtonColor,
+                    child: new Text("Хорошо"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]);
+          });
       print(e);
     }
   }
@@ -55,6 +88,22 @@ class ApiProvider {
 
       return returnedOrder.id;
     } catch (e) {
+      showDialog(
+          context: OrderScreen.orderScreenContext,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(
+                alertTitle: 'Произошла ошибка',
+                alertText: e,
+                buttons: <Widget>[
+                  new FlatButton(
+                    textColor: cleanOrderButtonColor,
+                    child: new Text("Хорошо"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]);
+          });
       print(e);
     }
   }

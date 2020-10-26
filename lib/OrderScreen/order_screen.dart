@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
   OrderScreen({Key key}) : super(key: key);
+  static BuildContext orderScreenContext;
 
   @override
   _OrderScreenState createState() => _OrderScreenState();
@@ -16,6 +17,7 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
+    OrderScreen.orderScreenContext = context;
     return Scaffold(
       appBar: AppBar(
         title: Text(

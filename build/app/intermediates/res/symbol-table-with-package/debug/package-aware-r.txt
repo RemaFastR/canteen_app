@@ -129,6 +129,8 @@ layout notification_template_part_chronometer
 layout notification_template_part_time
 layout toast_custom
 mipmap ic_launcher
+mipmap load
+mipmap logo
 string status_bar_notification_info_overflow
 style LaunchTheme
 style NormalTheme
