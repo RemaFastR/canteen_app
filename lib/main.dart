@@ -9,6 +9,7 @@ import 'functional/attributes.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
+  //HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
 }
 

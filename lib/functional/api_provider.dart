@@ -31,7 +31,7 @@ class ApiProvider {
           builder: (BuildContext context) {
             return CustomAlertDialog(
                 alertTitle: 'Произошла ошибка',
-                alertText: e,
+                alertText: e.toString(),
                 buttons: <Widget>[
                   new FlatButton(
                     textColor: cleanOrderButtonColor,
@@ -64,7 +64,7 @@ class ApiProvider {
           builder: (BuildContext context) {
             return CustomAlertDialog(
                 alertTitle: 'Произошла ошибка',
-                alertText: e,
+                alertText: e.toString(),
                 buttons: <Widget>[
                   new FlatButton(
                     textColor: cleanOrderButtonColor,
@@ -93,7 +93,7 @@ class ApiProvider {
           builder: (BuildContext context) {
             return CustomAlertDialog(
                 alertTitle: 'Произошла ошибка',
-                alertText: e,
+                alertText: e.toString(),
                 buttons: <Widget>[
                   new FlatButton(
                     textColor: cleanOrderButtonColor,
