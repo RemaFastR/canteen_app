@@ -31,11 +31,11 @@ class ApiProvider {
           builder: (BuildContext context) {
             return CustomAlertDialog(
                 alertTitle: 'Произошла ошибка',
-                alertText: e.toString(),
+                alertText: "Ошибка подключения к серверу",
                 buttons: <Widget>[
                   new FlatButton(
                     textColor: cleanOrderButtonColor,
-                    child: new Text("Хорошо"),
+                    child: new Text("ОК"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -64,11 +64,11 @@ class ApiProvider {
           builder: (BuildContext context) {
             return CustomAlertDialog(
                 alertTitle: 'Произошла ошибка',
-                alertText: e.toString(),
+                alertText: "Ошибка подключения к серверу",
                 buttons: <Widget>[
                   new FlatButton(
                     textColor: cleanOrderButtonColor,
-                    child: new Text("Хорошо"),
+                    child: new Text("ОК"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -93,11 +93,11 @@ class ApiProvider {
           builder: (BuildContext context) {
             return CustomAlertDialog(
                 alertTitle: 'Произошла ошибка',
-                alertText: e.toString(),
+                alertText: "Ошибка подключения к серверу",
                 buttons: <Widget>[
                   new FlatButton(
                     textColor: cleanOrderButtonColor,
-                    child: new Text("Хорошо"),
+                    child: new Text("ОК"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

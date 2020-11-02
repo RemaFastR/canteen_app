@@ -1,5 +1,6 @@
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/Models/product.dart';
+import 'package:canteen_app/OrderScreen/order_bloc.dart';
 import 'package:canteen_app/SelectCategoryScreen/select_category_repos.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:canteen_app/functional/main_bloc.dart';
@@ -22,21 +23,23 @@ class SelectCategoryBloc implements Bloc {
 
   addInOrder(int id, String title, String image, double cost,
       BuildContext scaffoldContext) async {
-    ProductForOrder productForOrder = new ProductForOrder(
-        id: id, quantity: 1, title: title, image: image, cost: cost);
-    ProductForOrder checker = orderProductsList.firstWhere(
-        (element) => element.id == productForOrder.id,
-        orElse: () => null);
-    print('------------ Order ------------');
-    if (checker != null) {
-      showToast(scaffoldContext, 'Блюдо блюдо уже добавлено в корзину',
-          cleanOrderButtonColor);
-    } else {
-      print("product with id ${id} added in order");
-      showToast(scaffoldContext, 'Блюдо добавлено в корзину', productInfoColor);
-      orderProductsList.add(productForOrder);
+    if (!OrderBloc.orderIsCreated) {
+      ProductForOrder productForOrder = new ProductForOrder(
+          id: id, quantity: 1, title: title, image: image, cost: cost);
+      ProductForOrder checker = orderProductsList.firstWhere(
+          (element) => element.id == productForOrder.id,
+          orElse: () => null);
+      print('------------ Order ------------');
+      if (checker != null) {
+        checker.quantity++;
+      } else {
+        print("product with id ${id} added in order");
+        showToast(
+            scaffoldContext, 'Блюдо добавлено в корзину', productInfoColor);
+        orderProductsList.add(productForOrder);
+      }
+      print('------------  ------------');
     }
-    print('------------  ------------');
   }
 
   void showToast(BuildContext context, String message, Color textColor) {

@@ -2,6 +2,7 @@ import 'package:canteen_app/MenuScreen/menu_screen.dart';
 import 'package:canteen_app/OrderScreen/order_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TabbedScreen extends StatefulWidget {
   TabbedScreen({Key key}) : super(key: key);
@@ -11,6 +12,7 @@ class TabbedScreen extends StatefulWidget {
 }
 
 class _TabbedScreenState extends State<TabbedScreen> {
+  DateTime currentBackPressTime;
   int _selectedIndex = 0;
   void _onItemTapped(int selectedIndex) {
     setState(() {
@@ -21,9 +23,11 @@ class _TabbedScreenState extends State<TabbedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [_buildOffstageNavigator(0), _buildOffstageNavigator(1)],
-      ),
+      body: WillPopScope(
+          child: Stack(
+            children: [_buildOffstageNavigator(0), _buildOffstageNavigator(1)],
+          ),
+          onWillPop: onWillPop),
       bottomNavigationBar: new Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Theme.of(context).accentColor,
@@ -70,5 +74,16 @@ class _TabbedScreenState extends State<TabbedScreen> {
         },
       ),
     );
+  }
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(msg: "Для выхода повторите еще раз");
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 }

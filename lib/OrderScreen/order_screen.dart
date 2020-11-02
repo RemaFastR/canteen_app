@@ -20,6 +20,7 @@ class _OrderScreenState extends State<OrderScreen> {
     OrderScreen.orderScreenContext = context;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Заказ',
           style: TextStyle(color: productInfoColor),
@@ -49,11 +50,12 @@ class CreateOrderList extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
-              return Center(
-                  child: Text(
+              return Expanded(
+                  child: Center(
+                      child: Text(
                 'Ваша корзина пустая',
                 style: TextStyle(fontSize: 18),
-              ));
+              )));
             }),
         Padding(
             padding: EdgeInsets.only(
@@ -246,7 +248,7 @@ class OrderListWidget extends StatelessWidget {
                               Text(
                                 products[index].title ?? "",
                                 style:
-                                    TextStyle(color: titlesColor, fontSize: 23),
+                                    TextStyle(color: titlesColor, fontSize: 21),
                               ),
                               Row(
                                 mainAxisAlignment:

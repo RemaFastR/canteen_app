@@ -27,6 +27,9 @@ class OrderBloc implements Bloc {
   Observable<int> get orderCountStream => _orderCountFetcher.stream;
   Observable<String> get orderStatusStream => _orderStatusFetcher.stream;
 
+  static bool orderIsCreated = false;
+  static Timer timer;
+
   getOrderList() async {
     _orderFetcher.sink.add(orderProductsList);
   }
@@ -71,21 +74,18 @@ class OrderBloc implements Bloc {
 
   int orderNum;
   sendOrder(BuildContext context, List<ProductForOrder> products) async {
+    orderIsCreated = true;
     if (orderProductsList.length == 0)
       print("Ваша корзина пустая!");
     else {
       orderNum = await _orderRepository.createOrder();
-      //LocalStorage orderStorage = new LocalStorage('orderNum');
-      //orderStorage.setItem('orderNum', orderNum);
       print('Order Id $orderNum is saved on cache');
       goToCheck(context, orderNum, products);
       showCheckDialog(context, orderNum);
     }
   }
 
-  getOrderById() async {
-    //LocalStorage orderStorage = new LocalStorage('orderNum');
-    //var orderNum = orderStorage.getItem('orderNum') ?? 0;
+  getOrderById(BuildContext context) async {
     if (orderNum != 0) {
       String orderInfo = await _orderRepository.getOrderById(orderNum);
       print(orderInfo);
@@ -103,6 +103,12 @@ class OrderBloc implements Bloc {
         case 2:
           _orderStatusFetcher.sink.add('Готов');
           break;
+        case 3:
+          timer.cancel();
+          orderProductsList.clear();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => OrderScreen()));
+          break;
         default:
           _orderStatusFetcher.sink.add('Неизвестно');
       }
@@ -110,8 +116,8 @@ class OrderBloc implements Bloc {
       print('Order Id is empty');
   }
 
-  getOrderStatus() async {
-    Timer.periodic(Duration(seconds: 10), (_) => getOrderById());
+  getOrderStatus(BuildContext context) async {
+    timer = Timer.periodic(Duration(seconds: 5), (_) => getOrderById(context));
   }
 
   showCheckDialog(BuildContext context, int orderNum) {

@@ -36,6 +36,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Заказ',
           style: TextStyle(color: productInfoColor),
@@ -69,7 +70,7 @@ class CheckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     orderBloc.getOrderPrice();
-    orderBloc.getOrderStatus();
+    orderBloc.getOrderStatus(context);
     return Container(
       padding: EdgeInsets.all(15),
       child: Column(
@@ -222,7 +223,7 @@ class ProductsInCheckList extends StatelessWidget {
                                   productsInCheck[index].title ?? "",
                                   style: TextStyle(
                                       color: orderTitleTextColor,
-                                      fontSize: 23,
+                                      fontSize: 21,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Row(
