@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  align_positioned: ^1.2.8
   connectivity: ^0.4.8+6
   localstorage: ^3.0.1+4
   provider: ^4.1.3

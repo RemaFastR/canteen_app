@@ -29,8 +29,7 @@ class NetworkAwareWidget extends StatelessWidget {
   final Widget onlineChild;
   final Widget offlineChild;
 
-  const NetworkAwareWidget({Key key, this.onlineChild, this.offlineChild})
-      : super(key: key);
+  NetworkAwareWidget({this.onlineChild, this.offlineChild});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +40,8 @@ class NetworkAwareWidget extends StatelessWidget {
       _showToastMessage("Проверьте подключение к интернету!");
       print('Отсутсет подключение к интернету');
       return offlineChild;
+    } else {
+      return onlineChild;
     }
   }
 

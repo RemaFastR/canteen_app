@@ -4,11 +4,15 @@ import 'package:http/http.dart' as http;
 
 class Requests {
   static Future<String> getRequest(String route) async {
-    var response = await http.get(route);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Ошибка при загрузке данных');
+    try {
+      var response = await http.get(route);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw Exception('Ошибка при загрузке данных');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

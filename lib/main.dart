@@ -13,16 +13,15 @@ void main() {
   runApp(MyApp());
 }
 
-final List<ProductForOrder> orderProductsList = List<ProductForOrder>();
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    StaticVariables.orderProductsList = List<ProductForOrder>();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Столовка',
       theme: ThemeData(
         // Фоновый цвет для всех окон.
         scaffoldBackgroundColor: titlesColor,

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:canteen_app/Models/order.dart';
 import 'package:canteen_app/Models/returned_order.dart';
@@ -9,8 +8,8 @@ import 'package:canteen_app/OrderScreen/order_repos.dart';
 import 'package:canteen_app/OrderScreen/order_screen.dart';
 import 'package:canteen_app/functional/main_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:rxdart/rxdart.dart';
+import '../functional/attributes.dart';
 
 import '../main.dart';
 
@@ -31,19 +30,19 @@ class OrderBloc implements Bloc {
   static Timer timer;
 
   getOrderList() async {
-    _orderFetcher.sink.add(orderProductsList);
+    _orderFetcher.sink.add(StaticVariables.orderProductsList);
   }
 
   clearOrderList() async {
-    orderProductsList.clear();
-    _orderFetcher.sink.add(orderProductsList);
+    StaticVariables.orderProductsList.clear();
+    _orderFetcher.sink.add(StaticVariables.orderProductsList);
     _orderPriceFetcher.sink.add(0);
   }
 
   double orderPrice = 0;
   getOrderPrice() async {
     orderPrice = 0;
-    for (var item in orderProductsList) {
+    for (var item in StaticVariables.orderProductsList) {
       orderPrice += item.cost * item.quantity;
     }
     Order.staticOrderPrice = orderPrice;
@@ -55,8 +54,10 @@ class OrderBloc implements Bloc {
   }
 
   incrementProductCount(ProductForOrder productForOrder) async {
-    productForOrder.quantity++;
-    _orderCountFetcher.sink.add(productForOrder.quantity);
+    if (productForOrder.quantity < 50) {
+      productForOrder.quantity++;
+      _orderCountFetcher.sink.add(productForOrder.quantity);
+    }
     getOrderPrice();
   }
 
@@ -66,18 +67,24 @@ class OrderBloc implements Bloc {
       _orderCountFetcher.sink.add(productForOrder.quantity);
       getOrderPrice();
     } else {
-      orderProductsList.remove(productForOrder);
-      _orderFetcher.sink.add(orderProductsList);
+      StaticVariables.orderProductsList.remove(productForOrder);
+      _orderFetcher.sink.add(StaticVariables.orderProductsList);
       getOrderPrice();
     }
   }
 
+  bool orderIsSended = false;
+  bool orderIsOver = false;
   int orderNum;
   sendOrder(BuildContext context, List<ProductForOrder> products) async {
     orderIsCreated = true;
-    if (orderProductsList.length == 0)
+    if (StaticVariables.orderProductsList.length == 0)
       print("Ваша корзина пустая!");
-    else {
+    else if (orderIsSended) {
+      print("Заказ уже совершен");
+    } else {
+      orderIsSended = true;
+      orderIsOver = false;
       orderNum = await _orderRepository.createOrder();
       print('Order Id $orderNum is saved on cache');
       goToCheck(context, orderNum, products);
@@ -104,10 +111,17 @@ class OrderBloc implements Bloc {
           _orderStatusFetcher.sink.add('Готов');
           break;
         case 3:
-          timer.cancel();
-          orderProductsList.clear();
+          orderIsSended = false;
+          orderIsCreated = false;
+          orderIsOver = true;
+          StaticVariables.orderProductsList.clear();
+          StaticVariables.orderProductsList = List<ProductForOrder>();
+          getOrderList();
+          getOrderPrice();
+          //Navigator.pop(context);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => OrderScreen()));
+          timer.cancel();
           break;
         default:
           _orderStatusFetcher.sink.add('Неизвестно');
@@ -117,7 +131,10 @@ class OrderBloc implements Bloc {
   }
 
   getOrderStatus(BuildContext context) async {
-    timer = Timer.periodic(Duration(seconds: 5), (_) => getOrderById(context));
+    if (orderIsOver == false) {
+      timer =
+          Timer.periodic(Duration(seconds: 5), (_) => getOrderById(context));
+    }
   }
 
   showCheckDialog(BuildContext context, int orderNum) {

@@ -46,6 +46,8 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
   }
 }
 
+bool dialogIsClosed = false;
+
 class ProductsListWidget extends StatelessWidget {
   List<Product> products;
   ProductsListWidget(this.products);
@@ -68,6 +70,7 @@ class ProductsListWidget extends StatelessWidget {
               onTap: () {
                 double dragStart;
                 double dragUpdate;
+                dialogIsClosed = false;
                 showGeneralDialog(
                     barrierColor: Colors.black.withOpacity(0.5),
                     transitionBuilder: (context, a1, a2, widget) {
@@ -89,8 +92,10 @@ class ProductsListWidget extends StatelessWidget {
                                 dragUpdate =
                                     details.globalPosition.dy.floorToDouble();
                                 print('dragUpdate' + dragUpdate.toString());
-                                if (dragUpdate + 40 < dragStart) {
+                                if (dragUpdate + 40 < dragStart &&
+                                    dialogIsClosed == false) {
                                   Navigator.of(context).pop();
+                                  dialogIsClosed = true;
                                 }
                               },
                               child: CustomDialog(
@@ -105,7 +110,7 @@ class ProductsListWidget extends StatelessWidget {
                       );
                     },
                     transitionDuration: Duration(milliseconds: 500),
-                    barrierDismissible: true,
+                    barrierDismissible: false,
                     barrierLabel: '',
                     context: context,
                     pageBuilder: (context, animation1, animation2) {});
@@ -270,7 +275,10 @@ class CustomDialog extends StatelessWidget {
                         onPressed: () {
                           categoryBloc.addInOrder(this.productId, this.title,
                               this.imgSrc, this.cost, scaffoldContext);
-                          Navigator.of(context).pop(); // To close the dialog
+                          if (dialogIsClosed == false) {
+                            Navigator.of(context).pop();
+                            dialogIsClosed = true;
+                          }
                         },
                         child: Text(
                           'Добавить',
@@ -281,22 +289,26 @@ class CustomDialog extends StatelessWidget {
               ],
             ),
           ),
-          // Positioned(
-          //   right: 0.0,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.of(context).pop();
-          //     },
-          //     child: Align(
-          //       alignment: Alignment.topRight,
-          //       child: CircleAvatar(
-          //         radius: 14.0,
-          //         backgroundColor: orderProductCostColor,
-          //         child: Icon(Icons.close, color: titlesColor),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            top: -1,
+            right: -1,
+            child: GestureDetector(
+              onTap: () {
+                if (dialogIsClosed == false) {
+                  Navigator.of(context).pop();
+                  dialogIsClosed = true;
+                }
+              },
+              child: Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 17.0,
+                  backgroundColor: Colors.red,
+                  child: Icon(Icons.close, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

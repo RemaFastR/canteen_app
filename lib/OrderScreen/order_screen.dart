@@ -118,7 +118,7 @@ class ConfirmWidget extends StatelessWidget {
               fillColor: createOrderButtonColor,
               splashColor: createOrderButtonColor,
               onPressed: () {
-                if (orderProductsList.length == 0) {
+                if (StaticVariables.orderProductsList.length == 0) {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -155,7 +155,7 @@ class ConfirmWidget extends StatelessWidget {
               fillColor: cleanOrderButtonColor,
               splashColor: cleanOrderButtonColor,
               onPressed: () {
-                if (orderProductsList.length == 0) {
+                if (StaticVariables.orderProductsList.length == 0) {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -222,7 +222,7 @@ class OrderListWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
               padding: const EdgeInsets.all(3),
-              height: ScreenSize.itemHeight / 2.8,
+              height: ScreenSize.itemHeight / 2.7,
               child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -235,6 +235,7 @@ class OrderListWidget extends StatelessWidget {
                       children: [
                         Container(
                           height: ScreenSize.itemHeight / 2,
+                          width: ScreenSize.itemWidth / 1.5,
                           child: Image.network(products[index].image +
                               '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
                         ),

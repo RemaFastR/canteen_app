@@ -1,4 +1,4 @@
-#Mon Nov 02 22:27:26 MSK 2020
+#Mon Nov 16 22:32:37 MSK 2020
 base.0=G\:\\Programming\\Flutter\\course_work\\canteen_app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

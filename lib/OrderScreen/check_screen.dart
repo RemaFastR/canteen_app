@@ -202,7 +202,7 @@ class ProductsInCheckList extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
                 padding: const EdgeInsets.all(3),
-                height: ScreenSize.itemHeight / 2.8,
+                height: ScreenSize.itemHeight / 2.7,
                 child: Container(
                     color: Color.fromRGBO(228, 230, 195, 0.4),
                     child: Container(
@@ -210,8 +210,13 @@ class ProductsInCheckList extends StatelessWidget {
                       child: Row(
                         children: [
                           //Image.asset(productsInCheck[index].image) ?? "",
-                          Image.network(productsInCheck[index].image +
-                              '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
+                          Container(
+                            height: ScreenSize.itemHeight / 2,
+                            width: ScreenSize.itemWidth / 1.5,
+                            child: Image.network(productsInCheck[index].image +
+                                '?CANTEEN-API-KEY=733fb9c1-db7f-4c0f-9cc0-59877c6cd8cf'),
+                          ),
+
                           Expanded(
                               child: Container(
                             padding: EdgeInsets.only(left: 10),
@@ -223,7 +228,7 @@ class ProductsInCheckList extends StatelessWidget {
                                   productsInCheck[index].title ?? "",
                                   style: TextStyle(
                                       color: orderTitleTextColor,
-                                      fontSize: 21,
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Row(

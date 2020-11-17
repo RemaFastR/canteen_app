@@ -29,18 +29,7 @@ class ApiProvider {
       showDialog(
           context: MenuScreen.menuScreenContext,
           builder: (BuildContext context) {
-            return CustomAlertDialog(
-                alertTitle: 'Произошла ошибка',
-                alertText: "Ошибка подключения к серверу",
-                buttons: <Widget>[
-                  new FlatButton(
-                    textColor: cleanOrderButtonColor,
-                    child: new Text("ОК"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ]);
+            return ServerConnectErrorAlert();
           });
     }
   }
@@ -62,18 +51,7 @@ class ApiProvider {
       showDialog(
           context: OrderScreen.orderScreenContext,
           builder: (BuildContext context) {
-            return CustomAlertDialog(
-                alertTitle: 'Произошла ошибка',
-                alertText: "Ошибка подключения к серверу",
-                buttons: <Widget>[
-                  new FlatButton(
-                    textColor: cleanOrderButtonColor,
-                    child: new Text("ОК"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ]);
+            return ServerConnectErrorAlert();
           });
       print(e);
     }
@@ -91,20 +69,28 @@ class ApiProvider {
       showDialog(
           context: OrderScreen.orderScreenContext,
           builder: (BuildContext context) {
-            return CustomAlertDialog(
-                alertTitle: 'Произошла ошибка',
-                alertText: "Ошибка подключения к серверу",
-                buttons: <Widget>[
-                  new FlatButton(
-                    textColor: cleanOrderButtonColor,
-                    child: new Text("ОК"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ]);
+            return ServerConnectErrorAlert();
           });
       print(e);
     }
+  }
+}
+
+class ServerConnectErrorAlert extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: CustomAlertDialog(
+            alertTitle: 'Произошла ошибка',
+            alertText: "Ошибка подключения к серверу",
+            buttons: <Widget>[
+          new FlatButton(
+            textColor: cleanOrderButtonColor,
+            child: new Text("ОК"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ]));
   }
 }

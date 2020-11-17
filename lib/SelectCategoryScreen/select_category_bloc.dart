@@ -5,6 +5,7 @@ import 'package:canteen_app/SelectCategoryScreen/select_category_repos.dart';
 import 'package:canteen_app/functional/attributes.dart';
 import 'package:canteen_app/functional/main_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../main.dart';
@@ -23,22 +24,19 @@ class SelectCategoryBloc implements Bloc {
 
   addInOrder(int id, String title, String image, double cost,
       BuildContext scaffoldContext) async {
-    if (!OrderBloc.orderIsCreated) {
+    if (OrderBloc.orderIsCreated == false) {
       ProductForOrder productForOrder = new ProductForOrder(
           id: id, quantity: 1, title: title, image: image, cost: cost);
-      ProductForOrder checker = orderProductsList.firstWhere(
+      ProductForOrder checker = StaticVariables.orderProductsList.firstWhere(
           (element) => element.id == productForOrder.id,
           orElse: () => null);
-      print('------------ Order ------------');
       if (checker != null) {
         checker.quantity++;
+        Fluttertoast.showToast(msg: "Количество блюда увеличилось");
       } else {
-        print("product with id ${id} added in order");
-        showToast(
-            scaffoldContext, 'Блюдо добавлено в корзину', productInfoColor);
-        orderProductsList.add(productForOrder);
+        Fluttertoast.showToast(msg: "Блюдо добавлено в корзину");
+        StaticVariables.orderProductsList.add(productForOrder);
       }
-      print('------------  ------------');
     }
   }
 
